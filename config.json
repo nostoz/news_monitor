@@ -1,0 +1,28 @@
+
+{
+    "database_path": "./rss_feeds.db",
+    "nlp_model": "ProsusAI/finbert",
+
+    "rss_feeds": [
+        "https://feeds.a.dj.com/rss/RSSMarketsMain.xml",
+        "https://www.ft.com/news-feed?format=rss",
+        "https://feeds.bloomberg.com/markets/news.rss",
+        "https://www.reutersagency.com/feed/?taxonomy=best-sectors&post_type=best"
+    ],
+
+    "keywords": [
+        ["binance", "SEC"], ["binance", "investigation"],
+        ["XRP", "security"],
+        "BTC", "ETH",
+        ["BTC", "ETF"], ["bitcoin", "ETF"],
+        ["china", "crypto", "crackdown"]
+    ],
+
+    "telegram": {
+        "enabled": true,
+        "bot_token": "5971600804:AAF19xS2oH8FtGodg7lytzMCr64-4TO5mxA",
+        "chat_id": "-651806805"
+    }
+}
+
+
