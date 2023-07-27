@@ -19,13 +19,15 @@ class SentimentNLP():
         new_sentiment_analyses = []
         for idx, row in df_feeds.iterrows():
             for keyword in keywords:
-                if self._is_keyword_in_string(keyword, row['title']) or self._is_keyword_in_string(keyword, row['summary']): 
+                if self._is_keyword_in_string(keyword['keyword'], row['title']) or self._is_keyword_in_string(keyword['keyword'], row['summary']): 
                     sentiment = self.pipe(f"{row['title']}\n{row['summary']}")
                     
-                    df_feeds.loc[idx, 'keyword'] = str(keyword)
+                    df_feeds.loc[idx, 'keyword'] = str(keyword['keyword'])
+                    df_feeds.loc[idx, 'keyword_weight'] = keyword['weight']
                     df_feeds.loc[idx, 'sentiment_score'] = sentiment[0]['score']
                     df_feeds.loc[idx, 'sentiment_label'] = sentiment[0]['label']
-                    new_sentiment_analyses.append([row['datetime'], keyword, row['title'], row['source'], f"{sentiment[0]['label']} ({sentiment[0]['score']:0.2f})"])
+                    df_feeds.loc[idx, 'custom_score'] = sentiment[0]['score'] * keyword['weight'] * row['rss_feed_weight']
+                    new_sentiment_analyses.append([row['datetime'], keyword['keyword'], row['title'], row['source'], f"{sentiment[0]['label']} ({sentiment[0]['score']:0.2f})", df_feeds.loc[idx, 'custom_score']])
 
         if self.telegram_messenger and len(new_sentiment_analyses) > 0:
             telegram_msgs = [""]
@@ -38,7 +40,8 @@ class SentimentNLP():
                                         Keyword: {element[1]}\n\
                                         Title: {element[2]}\n\
                                         Source: {element[3]}\n\
-                                        Sentiment: {element[4]}\n\n"
+                                        Sentiment: {element[4]}\n\
+                                        Custom score: {element[5]}\n\n"
 
             for msg in telegram_msgs:
                 self.telegram_messenger.send_telegram_message(msg)

@@ -4,25 +4,109 @@
     "nlp_model": "ProsusAI/finbert",
 
     "rss_feeds": [
-        "https://feeds.a.dj.com/rss/RSSMarketsMain.xml",
-        "https://www.ft.com/news-feed?format=rss",
-        "https://feeds.bloomberg.com/markets/news.rss",
-        "https://www.reutersagency.com/feed/?taxonomy=best-sectors&post_type=best"
+        {
+            "name":"WSJ",
+            "url":"https://feeds.a.dj.com/rss/RSSMarketsMain.xml",
+            "weight":10
+        },
+        {
+            "name":"FT",
+            "url":"https://www.ft.com/news-feed?format=rss",
+            "weight":8
+        },
+        {
+            "name":"BBG",
+            "url":"https://feeds.bloomberg.com/markets/news.rss",
+            "weight":7
+        },
+        {
+            "name":"Reuters",
+            "url":"https://www.reutersagency.com/feed/?taxonomy=best-sectors&post_type=best",
+            "weight":7
+        },
+        {
+            "name":"TheStreet",
+            "url":"https://www.thestreet.com/.rss/full/",
+            "weight":3
+        },
+        {
+            "name":"CNBC",
+            "url":"https://www.cnbc.com/id/10000664/device/rss/rss.html",
+            "weight":3
+        },
+
+        {
+            "name":"Coindesk",
+            "url":"https://www.coindesk.com/feed",
+            "weight":3
+        },
+        {
+            "name":"Cointelegraph",
+            "url":"https://cointelegraph.com/rss",
+            "weight":5
+        },
+        {
+            "name":"Decrypt",
+            "url":"https://decrypt.co/feed",
+            "weight":3
+        },
+        {
+            "name":"BitcoinMagazine",
+            "url":"https://bitcoinmagazine.com/feed",
+            "weight":2
+        },
+        {
+            "name":"Blockworks",
+            "url":"https://blockworks.co/feed",
+            "weight":3
+        },
+        {
+            "name":"Coinjournal",
+            "url":"https://coinjournal.net/news/feed/",
+            "weight":3
+        }
     ],
 
-    "keywords": [
-        ["binance", "SEC"], ["binance", "investigation"],
-        ["XRP", "security"],
-        "BTC", "ETH",
-        ["BTC", "ETF"], ["bitcoin", "ETF"],
-        ["china", "crypto", "crackdown"]
+    "keywords": [ 
+        {
+            "keyword":["binance", "SEC"],
+            "weight":10
+        },
+        {
+            "keyword":["binance", "investigation"],
+            "weight":10
+        },
+        {
+            "keyword":["XRP", "security"],
+            "weight":9
+        },
+        {
+            "keyword":" BTC ",
+            "weight":3
+        },
+        {
+            "keyword":" ETH ",
+            "weight":3
+        },
+        {
+            "keyword":[" BTC ", " ETF "],
+            "weight":9
+        },
+        {
+            "keyword":["bitcoin", " ETF "],
+            "weight":9
+        },
+        {
+            "keyword":["china", "crypto", "crackdown"],
+            "weight":9
+        }
     ],
 
     "telegram": {
         "enabled": true,
-        "bot_token": "5971600804:AAF19xS2oH8FtGodg7lytzMCr64-4TO5mxA",
-        "chat_id": "-651806805"
+        "bot_token": "<telegram_bot_token>",
+        "chat_id": "<telegram_chat_id>",
+        "api_id": "<telegram_bot_token>"
     }
 }
-
 
