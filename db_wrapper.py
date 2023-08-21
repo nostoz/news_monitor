@@ -5,7 +5,13 @@ import pandas as pd
 
 class DBWrapper():
     def __init__(self, db_path) -> None:
-        self.logger = set_logger(log_file='db_wrapper.log', log_level='INFO')
+        """
+        Initializes the DBWrapper.
+
+        Args:
+            db_path (str): The path to the SQLite database.
+        """
+        self.logger = set_logger(name=__name__, log_file='db_wrapper.log', log_level='INFO')
 
         self.db_path = db_path
         self.conn = sqlite3.connect(self.db_path)
@@ -13,12 +19,26 @@ class DBWrapper():
         self._create_rss_feeds_table_if_not_existing()          
 
     def save_to_db(self, df, table_name, if_exists='append', index=False):
-        
+        """
+        Saves a DataFrame to the specified database table.
+
+        Args:
+            df (pandas.DataFrame): The DataFrame to be saved.
+            table_name (str): The name of the database table.
+            if_exists (str, optional): Behavior when the table exists. Defaults to 'append'.
+            index (bool, optional): Whether to include the index in the table. Defaults to False.
+        """
         df = self.keep_older_records_when_duplicate_ids(table_name, df)
         df.to_sql(name=table_name, con=self.conn, if_exists=if_exists, index=index)
         self.conn.commit()
 
     def get_article_ids_from_db(self):
+        """
+        Retrieves article IDs from the database.
+
+        Returns:
+            list: A list of article IDs.
+        """
         try:
             sql = "SELECT id FROM rss_feeds"
             self.cursor.execute(sql)
@@ -30,6 +50,9 @@ class DBWrapper():
             return []
 
     def _create_rss_feeds_table(self):
+        """
+        Creates the 'rss_feeds' table in the database.
+        """
         create_table_query = "CREATE TABLE rss_feeds \
             (id TEXT PRIMARY KEY, timestamp INTEGER, datetime TEXT, title TEXT,\
              summary TEXT, source TEXT, rss_feed_weight INTEGER,\
@@ -39,6 +62,9 @@ class DBWrapper():
         self.cursor.execute(create_table_query)
 
     def _create_rss_feeds_table_if_not_existing(self):
+        """
+        Creates the 'rss_feeds' table if it doesn't exist.
+        """
         try:
             self.cursor.execute('SELECT name FROM sqlite_master WHERE type="table" AND name="rss_feeds"')
         except sqlite3.OperationalError:
@@ -51,9 +77,6 @@ class DBWrapper():
         Args:
             table_name: The name of the table.
             ids: The list of IDs to drop.
-
-        Returns:
-            None.
         """
         sql = f'DELETE FROM {table_name} WHERE id IN ({",".join(map(str, ids))})'
         print(sql)

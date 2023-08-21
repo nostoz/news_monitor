@@ -19,6 +19,13 @@ from dateutil import parser as timeparser
 
 
 def WSJ_rss_history_fetchers_from_wayback_machine(start, end):
+    """
+    Fetches historical RSS feeds from the Wayback Machine and saves them as XML files.
+
+    Args:
+        start (datetime): The start date for fetching historical feeds.
+        end (datetime): The end date for fetching historical feeds.
+    """
     wayback_WSJ_template = "https://web.archive.org/web/<YYYYMMDDHHMM>/https://feeds.a.dj.com/rss/RSSMarketsMain.xml"
 
     def save_xml(url):
@@ -46,11 +53,27 @@ def WSJ_rss_history_fetchers_from_wayback_machine(start, end):
 
 class BuildHistoryNewsMonitor(NewsMonitor):
     def __init__(self, config, rss_history_folder) -> None:
+        """
+        Initializes the BuildHistoryNewsMonitor.
+
+        Args:
+            config (dict): The configuration dictionary containing project settings.
+            rss_history_folder (str): The path to the folder containing historical RSS XML files.
+        """
         super().__init__(config)
         self.rss_history_files = self._build_history_rss_files_list(rss_history_folder)
         self.rss_parser = RSSFeedParser(self.rss_history_files, config['keywords'], self.nlp_pipe, self.db_wrapper)
 
     def _build_history_rss_files_list(self, rss_history_folder):
+        """
+        Builds a list of historical RSS XML files.
+
+        Args:
+            rss_history_folder (str): The path to the folder containing historical RSS XML files.
+
+        Returns:
+            list: A list of dictionaries containing historical RSS feed information.
+        """
         files = os.listdir(rss_history_folder)
         xml_list = []
         for file in files:
@@ -63,6 +86,9 @@ class BuildHistoryNewsMonitor(NewsMonitor):
         return xml_list
     
     def save_history_to_db(self):
+        """
+        Parses and analyzes historical RSS feeds and saves results to the database.
+        """
         self.rss_parser.parse_and_analyze_rss_feeds(save_to_db=True)
 
 

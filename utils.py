@@ -22,7 +22,7 @@ def read_json(file_path):
         return json.load(f)
     
 
-def set_logger(log_file, log_level='ERROR'):
+def set_logger(name, log_file, log_level='ERROR'):
     log_levels = {'INFO':logging.INFO,
                   'WARNING':logging.WARNING,
                   'DEBUG':logging.DEBUG,
@@ -37,7 +37,7 @@ def set_logger(log_file, log_level='ERROR'):
     format='%(asctime)s %(levelname)-8s %(message)s',
     datefmt='%Y-%m-%d %H:%M:%S')
 
-    logger = logging.getLogger(__name__)
+    logger = logging.getLogger(name)
     if config['telegram']['enabled'] == True:
         telegram_handler = TelegramLogHandler(config['telegram']['bot_token'], config['telegram']['chat_id'])
         logger.addHandler(telegram_handler)
